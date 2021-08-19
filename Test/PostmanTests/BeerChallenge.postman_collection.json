@@ -1,0 +1,277 @@
+{
+	"info": {
+		"_postman_id": "5aac5737-d14e-4413-a598-8c327195af4d",
+		"name": "BeerChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Beer name test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Beer name test not empty\", () => {\r",
+							"const jsonData = pm.response.json();\r",
+							"jsonData.forEach(x=>pm.expect(x.name).to.have.length.above(0)) \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Beer name not null\", function () {\r",
+							"var jsonData = pm.response.json();\r",
+							"jsonData.forEach(n=>pm.expect(n.name).not.to.be.null)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.punkapi.com/v2/beers?brewed_after=12-2015",
+					"protocol": "https",
+					"host": [
+						"api",
+						"punkapi",
+						"com"
+					],
+					"path": [
+						"v2",
+						"beers"
+					],
+					"query": [
+						{
+							"key": "brewed_after",
+							"value": "12-2015"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Beer abv test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Beer abv test double\", () => {\r",
+							"var jsonData = pm.response.json();\r",
+							"//jsonData.forEach(e=>pm.expect(e.abv).to.be.a('double')) //locale trouble, did not find a proper locale conversion in javascript\r",
+							"jsonData.forEach(e=>pm.expect(e.abv).to.be.a('number')) //every number is a double in javascript, every double can be a number\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Abv not null\", function () {\r",
+							"var jsonData = pm.response.json();\r",
+							"jsonData.forEach(e=>pm.expect(e.abv).not.to.be.null) //bad practice, but working :)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Abv not empty string\", function() {\r",
+							"const jsonData = pm.response.json();\r",
+							"//jsonData.forEach(x=>pm.expect(x.abv).to.have.length.above(0)) //not sure if ok, 'empty' assertion?\r",
+							"jsonData.forEach(x=>pm.expect(x.abv).to.be.a('number'))\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Abv 4 or more test\", function () {\r",
+							"var jsonData = pm.response.json();\r",
+							"jsonData.forEach(e=>pm.expect(e.abv).to.above(4.0))\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "charset=utf-8",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.punkapi.com/v2/beers?brewed_after=12-2015",
+					"protocol": "https",
+					"host": [
+						"api",
+						"punkapi",
+						"com"
+					],
+					"path": [
+						"v2",
+						"beers"
+					],
+					"query": [
+						{
+							"key": "brewed_after",
+							"value": "12-2015"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Beer Response Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"  });\r",
+							"\r",
+							"  pm.test(\"Response time below 100ms\", function() {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.punkapi.com/v2/beers?brewed_after=12-2015",
+					"protocol": "https",
+					"host": [
+						"api",
+						"punkapi",
+						"com"
+					],
+					"path": [
+						"v2",
+						"beers"
+					],
+					"query": [
+						{
+							"key": "brewed_after",
+							"value": "12-2015"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Beer food pairing test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Beer food pairing test\", () => {\r",
+							"const jsonData = pm.response.json();\r",
+							"jsonData.forEach(x=>pm.expect(x.food_pairing).to.be.an('array'))\r",
+							"jsonData.forEach(x=>pm.expect(x.food_pairing).not.to.include(\"pico de gallo\"))\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.punkapi.com/v2/beers?brewed_after=12-2015",
+					"protocol": "https",
+					"host": [
+						"api",
+						"punkapi",
+						"com"
+					],
+					"path": [
+						"v2",
+						"beers"
+					],
+					"query": [
+						{
+							"key": "brewed_after",
+							"value": "12-2015"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Header test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Content-Type header is present\", () => {\r",
+							"  pm.response.to.have.header(\"Content-Type\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.punkapi.com/v2/beers?brewed_after=12-2015",
+					"protocol": "https",
+					"host": [
+						"api",
+						"punkapi",
+						"com"
+					],
+					"path": [
+						"v2",
+						"beers"
+					],
+					"query": [
+						{
+							"key": "brewed_after",
+							"value": "12-2015"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
