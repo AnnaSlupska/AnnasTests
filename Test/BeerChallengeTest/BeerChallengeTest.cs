@@ -4,13 +4,13 @@ using RA.Extensions;
 using System.Globalization;
 using System.Linq;
 
-namespace Test1
+namespace BeerChallengeTest
 {
     [TestClass]
-    public class UnitTest1
+    public class Challenge_BeersMadeAfter122015
     {
         [TestMethod]
-        public void TestAbv()
+        public void Abv_NotEmptyNumericAndLargerThan4()
         {
             var result = new RestAssured()
                  .Given()
@@ -36,7 +36,7 @@ namespace Test1
         }
 
         [TestMethod]
-        public void TestBeerName()
+        public void Name_NotEmptyAndNotNull()
         {
             var result = new RestAssured()
                  .Given()
@@ -56,11 +56,11 @@ namespace Test1
         }
 
         [TestMethod]
-        public void TestBeerExtra()
+        public void TestBeerExtras_ElaspedTimeAndStatus()
         {
             var result = new RestAssured()
                  .Given()
-                     .Name("BeerChallengeTestAdditional")
+                     .Name("BeerChallengeTestTimeResponse")
                  .When()
                      .Get("https://api.punkapi.com/v2/beers?brewed_after=12-2015")
                  .Then()
