@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RA;
 using RA.Extensions;
@@ -49,11 +50,37 @@ namespace BeerChallengeTest
             var jsonResult = result as Newtonsoft.Json.Linq.JArray;
 
             //name not null test
-            jsonResult.ForEach(e => Assert.IsNotNull("name", $"Failed for ID {(string)e["id"]}. Name is null."));
+            //jsonResult.ForEach(e => Assert.IsNotNull("name", $"Failed for ID {(string)e["id"]}. Name is null.")); ---> wrong test construction, checked "name" and token instead of the value in json
+
+            jsonResult.ForEach(e => Assert.IsNotNull(e["name"].ToString(), $"Failed for ID {(string)e["id"]}. Name is null."));
 
             //name not empty string test
-            jsonResult.ForEach(e => Assert.AreNotEqual("", "name", $"Failed for ID {(string)e["id"]}. Name is empty."));
+            //jsonResult.ForEach(e => Assert.AreNotEqual("", "name", $"Failed for ID {(string)e["id"]}. Name is empty.")); ---> wrong test construction, checked "name" and token instead of the value in json
+
+            jsonResult.ForEach(e => Assert.AreNotEqual("", e["name"].ToString(), $"Failed for ID {(string)e["id"]}. Name is empty."));
         }
+
+
+        [TestMethod]
+        public void BeerTest_FoodPairingDoesNotContainPicoDeGallo()
+        {
+            var result = new RestAssured()
+                 .Given()
+                     .Name("BeerChallengeTestFoodPairing")
+                 .When()
+                     .Get("https://api.punkapi.com/v2/beers?brewed_after=12-2015")
+                 .Then()
+                 .Retrieve(a => a);
+
+            var jsonResult = result as Newtonsoft.Json.Linq.JArray;
+
+            //food pairing does not contain poppers
+            //fluent assertions in use
+
+            jsonResult.ForEach(a => a["food_pairing"].ToString().Should().NotContain("pico de gallo"));
+        }
+
+        // extra tests
 
         [TestMethod]
         public void TestBeerExtras_ElaspedTimeAndStatus()
